@@ -4,9 +4,21 @@ phases:
   install:
     runtime-versions:
       java: corretto11
-  post_build:
+
+  pre_build:
+    commands:
+      - echo ======================Pre build ==================
+      - pwd
+      - ls -al
+      - ls -al ./src/main/resources/
+      -aws s3 cp s3://tiffsbucket/jdbc.properties ./src/main/resources/jdbc.properties
+  build:
     commands:
       - mvn package
+
+  post_build:
+    commands:
+
       - mv target/devops-demo-0.1.war ROOT.war
 artifacts:
   files:
